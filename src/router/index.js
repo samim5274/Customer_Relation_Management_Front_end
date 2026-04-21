@@ -30,10 +30,13 @@ import Unauthorized from '../components/Auth/unauthorized.vue';
 // Home Routes
 import Home from '../components/Home/home.vue';
 
-// Dashboard Route::
+// Dashboard Route
 import Dashboard from '../components/Dashboard/admin/admin-dashboard.vue';
 import AdminProfile from '../components/Dashboard/admin/admin-profile.vue';
 import AdminSetting from '../components/Dashboard/admin/admin-setting.vue';
+
+// Customer Route
+import C_create from '../components/Dashboard/customer/create-customer.vue';
 
 const routes = [
     // Public Home Routes
@@ -52,6 +55,9 @@ const routes = [
     { path: '/admin/profile', component: AdminProfile, meta:{title: 'Admin Profile', requiresAuth: true, roles: ['admin']}},
     // user route
     { path: '/admin/setting', component: AdminSetting, meta:{title: 'Admin Setting', requiresAuth: true, roles: ['admin']}},
+
+    // Customer Routes
+    { path: '/customer-create', component: C_create, meta:{title: 'Create-customer', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
 ]
 
 

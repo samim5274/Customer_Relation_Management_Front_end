@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Pegination section -->
+                        <!-- Pagination section -->
                         <div class="flex flex-col gap-2 border-slate-200 bg-white dark:bg-slate-900 shadow-sm px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                             <p class="text-xs text-slate-500">
                                 Showing
@@ -412,7 +412,7 @@
                             </div>
                         </div>                        
                     </div>
-                    <!-- Pegination section -->
+                    <!-- Pagination section -->
                     <div class="flex flex-col gap-2 border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                         <p class="text-xs text-slate-500">
                             Showing

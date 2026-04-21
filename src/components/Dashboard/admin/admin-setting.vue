@@ -135,7 +135,7 @@ import { useRouter } from "vue-router";
 
 import Navbar from './admin-navbar.vue';
 import Header from './admin-header.vue';
-import Message from '../../Message/message.vue'
+import Message from '../../Message/message.vue';
 
 const sidebarOpen = ref(false);
 const active = ref("dashboard");

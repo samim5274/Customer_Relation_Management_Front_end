@@ -33,9 +33,9 @@
 
                     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                         <!-- Left: form -->
-                        <leftSection :users="users" @userCreated="fetchedUsers" />
+                        <leftSection />
                         <!-- Right: form -->
-                        <rightSection :users="users" />
+                        <rightSection />
                     </div>
                 </main>
             </div>
@@ -49,9 +49,9 @@ import { ref, onMounted, } from 'vue';
 import { useRouter } from "vue-router";
 import api from "../../../services/api";
 
-import Navbar from "./navbar.vue";
-import Header from "./header.vue";
-import Message from '../../Message/message.vue'
+import Navbar from '../admin/admin-navbar.vue';
+import Header from '../admin/admin-header.vue';
+import Message from '../../Message/message.vue';
 
 import rightSection from './user-list-right.vue';
 import leftSection from './user-list-left.vue';
@@ -62,41 +62,6 @@ const router = useRouter();
 const successMsg = ref('');
 const errorMsg = ref('');
 
-
-
-
-
-// const rightRef = ref(null);
-
-// function handleUserCreated() {
-//     rightRef.value?.fetchedUsers();
-// }
-
-
-
-
-
-
-
-
-
-// fetch user
-const users = ref([]);
-const loadingUsers = ref(false);
-// fetch all admin and customer
-async function fetchedUsers() {
-    loadingUsers.value = true;
-    try {
-        const res = await api.get('/customer/users');
-        if (res.data?.success) {
-        users.value = res.data.data;
-        }
-    } catch (err) {
-        console.error(err);
-    } finally {
-        loadingUsers.value = false;
-    }
-}
 
 
 
@@ -130,8 +95,6 @@ function onSearch(q) {
 
 /* ESC to close drawer */
 onMounted(() => {
-
-    fetchedUsers();
 
     window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") sidebarOpen.value = false;
