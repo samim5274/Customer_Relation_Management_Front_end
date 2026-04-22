@@ -45,12 +45,84 @@
                 </select>
                 </Field>
 
+                <Field label="Visa Category">
+                <select v-model="form.visaCategory" class="input">
+                    <option value="" disabled="">-- Select Visa Category --</option>
+                    <option v-for="visa in visaCategories" :key="visa.id" :value="visa.id">{{ visa.name }}</option>
+                </select>
+                </Field>
+
+                <Field label="Country">
+                <select v-model="form.country" class="input">
+                    <option value="" disabled selected>-- Select Country --</option>
+                    <option v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
+                </select>
+                </Field>
+
                 <Field label="National ID" class="sm:col-span-2">
                 <input v-model="form.national_id" type="text" class="input" placeholder="NID number" />
                 </Field>
 
                 <Field label="Religion" class="sm:col-span-2">
                 <input v-model="form.religion" type="text" class="input" placeholder="Religion" />
+                </Field>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 mt-4">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Other Information</h2>
+
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Father's Name">
+                <input v-model="form.father_name" type="text" class="input" placeholder="Father name" />
+                </Field>
+
+                <Field label="Mother's Name">
+                <input v-model="form.mother_name" type="text" class="input" placeholder="Mother's name" />
+                </Field>
+                
+                <Field label="Cccupation">
+                <input v-model="form.occupation" type="text" class="input" placeholder="occupation" />
+                </Field>
+
+                <br>
+
+                <Field label="Passport No">
+                <input v-model="form.passport_no" type="text" class="input" placeholder="A123456789" />
+                </Field>
+
+                <Field label="Passport Expired Date">
+                <input v-model="form.passport_expiry_date" type="date" class="input" />
+                </Field>
+
+                <Field label="Passport Photo">
+                <input type="file" accept="image/*"  class="input" />
+                </Field>
+
+                <Field label="NID Photo">
+                <input type="file" accept="image/*"  class="input" />
+                </Field>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 mt-4">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Spouse Details</h2>
+
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Spouse Name">
+                <input v-model="form.spouse_name" type="text" class="input" placeholder="Spouse Name" />
+                </Field>
+
+                <Field label="Spouse NID">
+                <input v-model="form.spouse_nid" type="text" class="input" placeholder="Spouse NID" />
+                </Field>
+
+                <Field label="Spouse Photo">
+                <input type="file" accept="image/*"  class="input" />
+                </Field>
+
+                <Field label="Spouse NID Photo">
+                <input type="file" accept="image/*"  class="input" />
                 </Field>
             </div>
         </div>
@@ -66,6 +138,20 @@
                 <Field label="Permanent address">
                 <textarea v-model="form.permanent_address" rows="3" class="input" placeholder="Permanent address"></textarea>
                 </Field>
+
+                <!-- is_submited -->
+                <Field label="Document Submission Status">
+                    <div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 transition-all">
+                        <label class="relative inline-flex cursor-pointer items-center">
+                            <input type="checkbox" v-model="form.is_submited" class="peer sr-only" />
+                            <div class="peer h-6 w-11 rounded-full bg-slate-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:bg-slate-700"></div>
+                            <span class="ml-3 text-sm font-medium text-slate-600 dark:text-slate-300">
+                                {{ form.is_submited ? 'Submitted' : 'Pending Submission' }}
+                            </span>
+                        </label>
+                    </div>
+                </Field>
+
             </div>
         </div>
 
@@ -121,6 +207,9 @@ function onPhotoChange(e) {
     photoPreview.value = URL.createObjectURL(file);
 }
 
+
+const authUser = ref(null);
+
 const photoUrl = computed(() => {
     const p = authUser.value?.photo;
     return p ? makeImg(p) : "/images/avatar.png";
@@ -158,14 +247,27 @@ const form = ref({
     dob: "",
     email: "",
     gender: "",
+    visaCategory: "",
+    country: "",
     blood_group: "",
     present_address: "",
     permanent_address: "",
     national_id: "",
     religion: "",
-    refer_id: "",
-    root_user_id: "",
-    position: '',
+    
+    father_name:'',
+    mother_name:'',
+    is_submited:'',
+    occupation:'',
+    passport_no:'',
+    passport_expiry_date:'',
+    passport_photo:'',
+    national_id_photo:'',
+
+    spouse_name:'',
+    spouse_photo:'',
+    spouse_nid:'',
+    spouse_nid_photo:'',
 });
 
 
@@ -178,7 +280,7 @@ async function CreateUser() {
     if(photoFile.value) payload.append("photo", photoFile.value);
 
     try {
-        const res = await api.post("/customer/create", payload);
+        const res = await api.post("/customers/create", payload);
 
         successMsg.value = res.data.message || "User created successfully!";
 
@@ -198,8 +300,48 @@ async function CreateUser() {
     }
 }
 
+
+
+
+
+
+
+
+
+// =============================
+// Get Visa Category and country
+// =============================
+const countries = ref([]);
+async function fetchedCountry() {
+    loading.value = true;
+    try {
+        const res = await api.get("/customers/get-country");
+        countries.value = res.data.data || []; 
+        // console.log(countries.value);
+    } catch (error) {
+        console.error("Failed to fetch countries:", error.response?.data || error.message);
+    } finally {
+        loading.value = false;
+    }
+}
+
+const visaCategories = ref([]);
+async function fetchedVisaCategory() {
+    loading.value = true;
+    try {
+        const res = await api.get("/customers/get-visa-category");
+        visaCategories.value = res.data.data || []; 
+        // console.log(visaCategories.value);
+    } catch (error) {
+        console.error("Failed to fetch visaCategories:", error.response?.data || error.message);
+    } finally {
+        loading.value = false;
+    }
+}
+
 onMounted(() => {
-    fetchedAuthUser();
+    fetchedCountry();
+    fetchedVisaCategory();
 });
 </script>
 
