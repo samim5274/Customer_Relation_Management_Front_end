@@ -7,7 +7,7 @@
         </div>
 
         <!-- Table -->
-        <div class="overflow-x-auto max-h-[900px]">
+        <div class="overflow-x-auto max-h-[1500px]">
             <table v-if="customers && customers.length > 0" class="min-w-full text-sm">
                 <!-- Body -->
                 <tbody>

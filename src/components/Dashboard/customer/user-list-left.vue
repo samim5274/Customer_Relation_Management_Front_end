@@ -95,13 +95,35 @@
                 <input v-model="form.passport_expiry_date" type="date" class="input" />
                 </Field>
 
-                <Field label="Passport Photo">
-                <input type="file" accept="image/*"  class="input" />
-                </Field>
+                <div class="flex items-center gap-4">
+                    <img
+                        v-if="previews.passport_photo"
+                        :src="previews.passport_photo"
+                        class="h-16 w-16 rounded-xl object-cover"
+                    />
 
-                <Field label="NID Photo">
-                <input type="file" accept="image/*"  class="input" />
-                </Field>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        @change="e => handleImageChange(e, 'passport_photo')"
+                        class="input"
+                    />
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <img
+                        v-if="previews.nid_photo"
+                        :src="previews.nid_photo"
+                        class="h-16 w-16 rounded-xl object-cover"
+                    />
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        @change="e => handleImageChange(e, 'nid_photo')"
+                        class="input"
+                    />
+                </div>
             </div>
         </div>
 
@@ -117,13 +139,35 @@
                 <input v-model="form.spouse_nid" type="text" class="input" placeholder="Spouse NID" />
                 </Field>
 
-                <Field label="Spouse Photo">
-                <input type="file" accept="image/*"  class="input" />
-                </Field>
+                <div class="flex items-center gap-4">
+                    <img
+                        v-if="previews.spouse_photo"
+                        :src="previews.spouse_photo"
+                        class="h-16 w-16 rounded-xl object-cover"
+                    />
 
-                <Field label="Spouse NID Photo">
-                <input type="file" accept="image/*"  class="input" />
-                </Field>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        @change="e => handleImageChange(e, 'spouse_photo')"
+                        class="input"
+                    />
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <img
+                        v-if="previews.spouse_nid_photo"
+                        :src="previews.spouse_nid_photo"
+                        class="h-16 w-16 rounded-xl object-cover"
+                    />
+
+                    <input
+                        type="file"
+                        accept="image/*"
+                        @change="e => handleImageChange(e, 'spouse_nid_photo')"
+                        class="input"
+                    />
+                </div>
             </div>
         </div>
 
@@ -159,11 +203,21 @@
             <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Photo</h2>
 
             <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <img :src="photoPreview || photoUrl" class="h-16 w-16 rounded-2xl object-cover ring-2 ring-slate-200 dark:ring-white/10" />
+                <img 
+                    :src="previews.user_photo || photoUrl" 
+                    class="h-16 w-16 rounded-2xl object-cover ring-2 ring-slate-200 dark:ring-white/10" 
+                />
 
                 <div class="flex-1">
-                <input type="file" accept="image/*" @change="onPhotoChange" class="block w-full text-sm text-slate-600 dark:text-slate-200" />
-                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">PNG/JPG recommended.</p>
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        @change="e => handleImageChange(e, 'user_photo')"
+                        class="block w-full text-sm text-slate-600 dark:text-slate-200" 
+                    />
+                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                        PNG/JPG recommended.
+                    </p>
                 </div>
             </div>
 
@@ -196,15 +250,28 @@ const Field = (props, { slots }) =>
         slots.default?.(),
     ]);
 
-const photoFile = ref(null);
-const photoPreview = ref("");
+const previews = ref({
+    passport_photo: '',
+    nid_photo: '',
+    spouse_photo: '',
+    spouse_nid_photo: '',
+    user_photo: ''
+});
 
-function onPhotoChange(e) {
+const files = ref({
+    passport_photo: null,
+    nid_photo: null,
+    spouse_photo: null,
+    spouse_nid_photo: null,
+    user_photo: null,
+});
+
+function handleImageChange(e, field) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    photoFile.value = file;
-    photoPreview.value = URL.createObjectURL(file);
+    files.value[field] = file;
+    previews.value[field] = URL.createObjectURL(file);
 }
 
 
@@ -257,7 +324,7 @@ const form = ref({
     
     father_name:'',
     mother_name:'',
-    is_submited:'',
+    is_submited: false,
     occupation:'',
     passport_no:'',
     passport_expiry_date:'',
@@ -274,27 +341,54 @@ const form = ref({
 async function CreateUser() {
     loading.value = true;
     errorMsg.value = "";
+    successMsg.value = "";
 
     const payload = new FormData();
-    Object.keys(form.value).forEach(key => payload.append(key, form.value[key] || ""));
-    if(photoFile.value) payload.append("photo", photoFile.value);
+
+    // normal form fields
+    Object.keys(form.value).forEach(key => {
+        if (key === "is_submited") return;
+        payload.append(key, form.value[key] ?? "");
+    });
+
+    payload.append("is_submited", form.value.is_submited ? 1 : 0);
+
+    // all image files append
+    Object.keys(files.value).forEach(key => {
+        if (files.value[key]) {
+            payload.append(key, files.value[key]);
+        }
+    });
 
     try {
-        const res = await api.post("/customers/create", payload);
+        const res = await api.post("/customers/create", payload, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
 
         successMsg.value = res.data.message || "User created successfully!";
 
-        Object.keys(form.value).forEach(key => form.value[key] = "");
-        photoPreview.value = null;
+        // reset form
+        Object.keys(form.value).forEach(key => {
+            form.value[key] = key === "is_submited" ? false : "";
+        });
 
-    } catch(err) {
+        // reset preview + files
+        Object.keys(previews.value).forEach(key => previews.value[key] = "");
+        Object.keys(files.value).forEach(key => files.value[key] = null);
+
+    } catch (err) {
         console.log("FULL ERROR:", err);
 
         if (err.response?.data?.errors) {
-            errorMsg.value = Object.values(err.response.data.errors).flat().join(", ");
+            errorMsg.value = Object.values(err.response.data.errors)
+                .flat()
+                .join(", ");
         } else {
             errorMsg.value = err.response?.data?.message || "Failed to create user";
         }
+
     } finally {
         loading.value = false;
     }
