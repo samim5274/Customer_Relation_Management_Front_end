@@ -38,6 +38,7 @@ import AdminSetting from '../components/Dashboard/admin/admin-setting.vue';
 // Customer Route
 import C_create from '../components/Dashboard/customer/create-customer.vue';
 import C_Details from '../components/Dashboard/customer/customer-list.vue';
+import C_Edit from '../components/Dashboard/customer/customer-edit.vue';
 
 const routes = [
     // Public Home Routes
@@ -59,7 +60,8 @@ const routes = [
 
     // Customer Routes
     { path: '/customer-create', component: C_create, meta:{title: 'Create-customer', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
-    { path: '/customers-details', component: C_Details, meta:{title: 'Customer Details', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}}
+    { path: '/customers-details', component: C_Details, meta:{title: 'Customer Details', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
+    { path: '/customer-edit/:id/:slug/:sku', component: C_Edit, meta:{title: 'Edit Customer', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
 ]
 
 

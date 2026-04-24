@@ -311,7 +311,7 @@ const routeMatch = [
   { key: "dashboard", prefixes: ["/admin/dashboard"] },
   { key: "profile", prefixes: ["/admin/profile"] },
 
-  { key: "customers", prefixes: ["/customers-details"] },
+  { key: "customers", prefixes: ["/customers-details", "/customer-edit"] },
   { key: "customer_create", prefixes: ["/customer-create"] },
   
   { key: "setting", prefixes: ["/admin/setting"] },

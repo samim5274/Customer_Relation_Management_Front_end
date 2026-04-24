@@ -170,12 +170,14 @@
 
 <script setup>
 import { ref, computed, onMounted, h } from 'vue';
+import { useRouter } from 'vue-router'
 import api, { makeImg } from "../../../services/api.js";
 
 import Navbar from '../admin/admin-navbar.vue';
 import Header from '../admin/admin-header.vue';
 import Message from '../../Message/message.vue';
 
+const router = useRouter()
 const sidebarOpen = ref(false);
 const active = ref("dashboard");
 const loading = ref(false);
@@ -211,6 +213,18 @@ const filteredCustomers = computed(() => {
 
 
 
+
+
+
+
+
+
+
+
+
+function editCustomer(user) {
+    router.push(`/customer-edit/${user.id}/${user.slug}/${user.sku}`);
+}
 
 
 
