@@ -29,6 +29,16 @@
                             <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">Edit Customer Details</h1>
                             <p class="text-sm text-slate-600 dark:text-slate-300">Modify customer details</p>
                         </div>
+
+                        <div>
+                            <button 
+                                @click="router.push('/customers-details')" 
+                                type="button"
+                                class="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all duration-200 hover:bg-slate-50 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white">
+                                <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                                <span>Back</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-6"> 
