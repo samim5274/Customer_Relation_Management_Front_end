@@ -134,11 +134,11 @@
                 <button
                   class="w-full px-4 py-2 text-sm text-left transition
                          hover:bg-white dark:hover:bg-white/10"
-                  :class="activeKey === 'customer'
+                  :class="activeKey === 'customers'
                     ? 'bg-white text-slate-900 font-medium dark:bg-white/10 dark:text-white'
                     : 'text-slate-700 dark:text-slate-200/90'"
-                  @click="pick('customer')">
-                  Customer List
+                  @click="pick('customers')">
+                  Customers
                 </button>
               </li>
 
@@ -287,6 +287,7 @@ const routeMap = {
   dashboard: "/admin/dashboard",
   profile: "/admin/profile",
 
+  customers: "/customers-details",
   customer_create: "/customer-create",
 
   setting: "/admin/setting",
@@ -309,7 +310,8 @@ const routeMap = {
 const routeMatch = [
   { key: "dashboard", prefixes: ["/admin/dashboard"] },
   { key: "profile", prefixes: ["/admin/profile"] },
-  
+
+  { key: "customers", prefixes: ["/customers-details"] },
   { key: "customer_create", prefixes: ["/customer-create"] },
   
   { key: "setting", prefixes: ["/admin/setting"] },
@@ -375,7 +377,7 @@ async function pick(key) {
 watch(
   () => activeKey.value,
   (k) => {
-    const customerKeys = ["customer_create"];
+    const customerKeys = ["customer_create", "customers"];
     if (customerKeys.includes(k)) {
       customerPagesOpen.value = true;
     }

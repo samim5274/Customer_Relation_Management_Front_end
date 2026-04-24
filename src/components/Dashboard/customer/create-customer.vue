@@ -26,16 +26,16 @@
                     <!-- Header -->
                     <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">Reference</h1>
-                            <p class="text-sm text-slate-600 dark:text-slate-300">Refer to earn more point</p>
+                            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">Customer Create</h1>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Create a new customer</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    <div class="grid grid-cols-1 gap-6"> <!-- lg:grid-cols-3 -->
                         <!-- Left: form -->
                         <leftSection />
                         <!-- Right: form -->
-                        <rightSection />
+                        <!-- <rightSection /> -->
                     </div>
                 </main>
             </div>

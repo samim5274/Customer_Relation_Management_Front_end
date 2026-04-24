@@ -183,14 +183,14 @@
                 <textarea v-model="form.permanent_address" rows="3" class="input" placeholder="Permanent address"></textarea>
                 </Field>
 
-                <!-- is_submited -->
+                <!-- is_submitted -->
                 <Field label="Document Submission Status">
                     <div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 transition-all">
                         <label class="relative inline-flex cursor-pointer items-center">
-                            <input type="checkbox" v-model="form.is_submited" class="peer sr-only" />
+                            <input type="checkbox" v-model="form.is_submitted" class="peer sr-only" />
                             <div class="peer h-6 w-11 rounded-full bg-slate-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:bg-slate-700"></div>
                             <span class="ml-3 text-sm font-medium text-slate-600 dark:text-slate-300">
-                                {{ form.is_submited ? 'Submitted' : 'Pending Submission' }}
+                                {{ form.is_submitted ? 'Submitted' : 'Pending Submission' }}
                             </span>
                         </label>
                     </div>
@@ -324,7 +324,7 @@ const form = ref({
     
     father_name:'',
     mother_name:'',
-    is_submited: false,
+    is_submitted: false,
     occupation:'',
     passport_no:'',
     passport_expiry_date:'',
@@ -347,11 +347,11 @@ async function CreateUser() {
 
     // normal form fields
     Object.keys(form.value).forEach(key => {
-        if (key === "is_submited") return;
+        if (key === "is_submitted") return;
         payload.append(key, form.value[key] ?? "");
     });
 
-    payload.append("is_submited", form.value.is_submited ? 1 : 0);
+    payload.append("is_submitted", form.value.is_submitted ? 1 : 0);
 
     // all image files append
     Object.keys(files.value).forEach(key => {
@@ -371,7 +371,7 @@ async function CreateUser() {
 
         // reset form
         Object.keys(form.value).forEach(key => {
-            form.value[key] = key === "is_submited" ? false : "";
+            form.value[key] = key === "is_submitted" ? false : "";
         });
 
         // reset preview + files

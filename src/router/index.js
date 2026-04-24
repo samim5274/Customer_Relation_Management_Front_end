@@ -37,6 +37,7 @@ import AdminSetting from '../components/Dashboard/admin/admin-setting.vue';
 
 // Customer Route
 import C_create from '../components/Dashboard/customer/create-customer.vue';
+import C_Details from '../components/Dashboard/customer/customer-list.vue';
 
 const routes = [
     // Public Home Routes
@@ -58,6 +59,7 @@ const routes = [
 
     // Customer Routes
     { path: '/customer-create', component: C_create, meta:{title: 'Create-customer', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
+    { path: '/customers-details', component: C_Details, meta:{title: 'Customer Details', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}}
 ]
 
 
