@@ -49,7 +49,7 @@
                                     type="text" 
                                     v-model="search" 
                                     placeholder="Search by name or email..." 
-                                    class="pl-9 pr-4 py-2 w-full sm:w-64 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                                    class="pl-9 pr-4 py-2 w-full sm:w-64 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none text-slate-900 dark:text-slate-100"
                                 />
                             </div>
                         </div>
