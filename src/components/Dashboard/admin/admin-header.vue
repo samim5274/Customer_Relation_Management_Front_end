@@ -31,7 +31,12 @@
             
             <router-link to="/admin/dashboard">
               <span class="text-lg font-black tracking-tighter uppercase italic text-slate-800 dark:text-white group-hover:text-[#2D92A2] transition-colors">
-                DYNAMIC <span class="text-[#2D92A2]">BAZAR</span>
+                <span v-if="shopNameParts.length">
+                  {{ shopNameParts[0] }}
+                  <span class="text-[#2D92A2]">
+                    {{ shopNameParts.slice(1).join(' ') }}
+                  </span>
+                </span>
               </span>
             </router-link>
           </div>
@@ -345,16 +350,16 @@ function onKey(e) {
 // get Default navbar image
 const shopLogoPreview = ref(''); 
 const shopWhiteLogoPreview = ref('');
-
+const vendor = ref(null);
 async function fetchedVendor(){
   try {
     const res = await api.get("/vendor");
     // console.log("Vendor API:", res.data.data);
     if(res.data.success && res.data.data){
-      const v = res.data.data;
+      vendor.value = res.data.data;
       
-      shopLogoPreview.value = v.shop_logo ? makeImg(v.shop_logo) : '/logo/logo.png';
-      shopWhiteLogoPreview.value = v.shop_logo_2 ? makeImg(v.shop_logo_2) : '/logo/white-logo.png';
+      shopLogoPreview.value = vendor.shop_logo ? makeImg(vendor.shop_logo) : '/logo/logo.png';
+      shopWhiteLogoPreview.value = vendor.shop_logo_2 ? makeImg(vendor.shop_logo_2) : '/logo/white-logo.png';
     }
   } catch(err){
     console.log("Vendor fetch error:", err);
@@ -364,6 +369,17 @@ async function fetchedVendor(){
 
 
 
+
+
+
+
+
+
+const shopNameParts = computed(() => {
+  if (!vendor.value?.shop_name) return [];
+
+  return vendor.value.shop_name.split(' ');
+});
 
 
 

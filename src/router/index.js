@@ -40,6 +40,9 @@ import C_create from '../components/Dashboard/customer/create-customer.vue';
 import C_Details from '../components/Dashboard/customer/customer-list.vue';
 import C_Edit from '../components/Dashboard/customer/customer-edit.vue';
 
+// Follow up Route
+import F_main from '../components/FollowUp/follow-up.vue';
+
 const routes = [
     // Public Home Routes
     { path: '/', component: Home, meta: {title: "Home - Mercuvaix"} },
@@ -62,6 +65,9 @@ const routes = [
     { path: '/customer-create', component: C_create, meta:{title: 'Create-customer', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
     { path: '/customers-details', component: C_Details, meta:{title: 'Customer Details', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
     { path: '/customer-edit/:id/:slug/:sku', component: C_Edit, meta:{title: 'Edit Customer', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
+
+    // Follow up routes
+    { path: '/follow-up', component: F_main, meta:{title: 'Follow up', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
 ]
 
 
