@@ -56,7 +56,7 @@
                                     <div class="relative">
                                         <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                                         <input type="text" v-model="search" 
-                                            class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 transition" 
+                                            class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 transition" 
                                             placeholder="Search users..." />
                                     </div>
                                 </div>
@@ -217,6 +217,16 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+
+                                                    <div class="text-center mt-4" v-if="nextPageUrl">
+                                                        <button
+                                                            @click="loadMore"
+                                                            :disabled="loading"
+                                                            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                                                        >
+                                                            {{ loading ? 'Loading...' : 'See More' }}
+                                                        </button>
                                                     </div>
 
                                                     <div v-if="followups.length === 0 && !detailsLoading" class="text-center py-10 bg-slate-50 dark:bg-slate-900/20 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800">
@@ -493,25 +503,45 @@ const selectedCustomer = computed(() => {
 });
 
 
-const followups = ref([]); // ফলো-আপ ডাটা রাখার জন্য
-const detailsLoading = ref(false); // লোডিং স্টেট
+const followups = ref([]);
+const nextPageUrl = ref(null);
+const detailsLoading = ref(false); 
+const followupsLoading = ref(false);
 
-// activeTab (customer id) পরিবর্তন হলে এই watch ফাংশনটি চলবে
+function loadMore() {
+    if (nextPageUrl.value) {
+        fetchFollowupHistory(activeTab.value, nextPageUrl.value);
+    }
+}
+
+// activeTab (customer id) 
 watch(activeTab, async (newId) => {
     if (newId) {
         await fetchFollowupHistory(newId);
     }
 });
 
-async function fetchFollowupHistory(customerId) {
-    detailsLoading.value = true;
+async function fetchFollowupHistory(customerId, url = null) {
+    followupsLoading.value = true;
     try {
-        // ব্যাকএন্ডে ওই ইউজারের ফলো-আপ ডাটা চেয়ে রিকোয়েস্ট
-        const res = await api.get(`/follow-up/customers/${customerId}/history`);
         
-        // ব্যাকএন্ড থেকে আসা ডাটা সেভ করা
-        followups.value = res.data.data; 
-        console.log(followups.value);
+        const endpoint = url 
+            ? url 
+            : `/follow-up/customers/${customerId}/history`;
+
+        const res = await api.get(endpoint);
+        const result = res.data.data;
+
+        if (!url) {
+            followups.value = result.data;
+        } else {
+            followups.value.push(...result.data);
+        }
+
+        nextPageUrl.value = result.next_page_url;
+
+        // followups.value = res.data.data; 
+        // console.log(followups.value);
     } catch (error) {
         console.error("Error fetching follow-ups:", error);
         followups.value = [];
