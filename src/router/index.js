@@ -42,6 +42,7 @@ import C_Edit from '../components/Dashboard/customer/customer-edit.vue';
 
 // Follow up Route
 import F_main from '../components/FollowUp/follow-up.vue';
+import F_review from '../components/FollowUp/follow-up-review.vue';
 
 const routes = [
     // Public Home Routes
@@ -68,6 +69,7 @@ const routes = [
 
     // Follow up routes
     { path: '/follow-up', component: F_main, meta:{title: 'Follow up', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']}},
+    { path: '/follow-up-review', component: F_review, meta:{title: 'Reveiw Follow up', requiresAuth: true, roles: ['admin', 'manager', 'agent', 'support']} },
 ]
 
 

@@ -184,7 +184,26 @@
             <span class="opacity-90 w-5 text-center">
               <i class="fa-solid fa-heart-circle-plus"></i>
             </span>
-            <span class="text-sm font-medium">follow-up</span>
+            <span class="text-sm font-medium">Follow-up</span>
+          </button>
+        </li>
+
+
+
+        <!-- Follow Up Review -->
+        <li>
+          <button
+            class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition
+                   focus:outline-none focus:ring-2 focus:ring-slate-500/40
+                   hover:bg-slate-100 dark:hover:bg-white/10"
+            :class="activeKey === 'FollowUpReview'
+              ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-white/10 dark:text-white dark:ring-white/10'
+              : ''"
+            @click="pick('FollowUpReview')">
+            <span class="opacity-90 w-5 text-center">
+              <i class="fa-solid fa-circle-nodes"></i>
+            </span>
+            <span class="text-sm font-medium">Review follow-up</span>
           </button>
         </li>
 
@@ -292,6 +311,7 @@ const routeMap = {
   customer_create: "/customer-create",
 
   FollowUp: "/follow-up",
+  FollowUpReview: "/follow-up-review",
 
   setting: "/admin/setting",
   logout: "/login",
@@ -317,6 +337,7 @@ const routeMatch = [
   { key: "customers", prefixes: ["/customers-details", "/customer-edit"] },
   { key: "customer_create", prefixes: ["/customer-create"] },
 
+  { key: "FollowUpReview", prefixes: ["/follow-up-review"]},
   { key: "FollowUp", prefixes: ["/follow-up"]},
   
   { key: "setting", prefixes: ["/admin/setting"] },
